@@ -3,175 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HPSP Intelligence Dashboard</title>
+    <title>TES Investment Report</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&display=swap');
-        body { font-family: 'Pretendard', sans-serif; background-color: #f8fafc; }
-        .glass-panel { background: white; border: 1px solid #e2e8f0; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .gradient-text { background: linear-gradient(135deg, #1e40af, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800&display=swap');
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8fafc; color: #0f172a; }
+        .glass-header { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); }
+        .stat-card { background: white; border-radius: 12px; border: 1px solid #e2e8f0; transition: all 0.2s ease; }
+        .stat-card:hover { border-color: #3b82f6; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .insight-box { border-left: 4px solid #3b82f6; background: #eff6ff; }
+        .target-price { color: #ef4444; font-weight: 800; }
+        .order-badge { background: #dcfce7; color: #166534; font-weight: 700; font-size: 0.75rem; }
     </style>
 </head>
-<body class="p-4 md:p-8">
-    <div id="app" class="max-w-6xl mx-auto space-y-6">
-        
-        <!-- 고정 헤더: 종목명과 가격만 변경 -->
-        <header id="headerSection" class="bg-[#1e293b] text-white p-8 rounded-[28px] shadow-xl flex flex-col md:flex-row justify-between items-center">
-            <div class="text-center md:text-left">
-                <div class="flex items-center gap-2 mb-2 justify-center md:justify-start">
-                    <span class="bg-indigo-500 text-[10px] px-2 py-0.5 rounded font-bold">PREMIUM TECH</span>
-                    <span id="stockCode" class="text-slate-400 text-sm font-medium">KOSDAQ 403870</span>
-                </div>
-                <h1 class="text-4xl font-extrabold tracking-tight">HPSP <span class="font-light opacity-50 text-2xl">| 에이치피에스피</span></h1>
-                <p id="updateTime" class="text-slate-500 text-xs mt-2 uppercase tracking-widest">REAL-TIME DATA SYNCED</p>
-            </div>
-            
-            <div class="mt-6 md:mt-0 text-center md:text-right">
-                <div class="text-xs text-slate-400 mb-1">CURRENT PRICE</div>
-                <div id="currentPrice" class="text-5xl font-black text-white">41,250</div>
-                <div id="priceChange" class="flex items-center justify-center md:justify-end gap-1 mt-1 text-emerald-400 font-bold">
-                    <i class="fa-solid fa-arrow-trend-up"></i>
-                    <span>고압 어닐링 독점력 유지 (OPI 50%+)</span>
-                </div>
-            </div>
-        </header>
+<body class="pb-12">
 
-        <!-- 메인 분석 레이아웃 (2단 구성 유지) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            
-            <!-- 왼쪽: 기업 가치 평가 (Radar Chart) -->
-            <div class="lg:col-span-4 space-y-6">
-                <section class="glass-panel p-6">
-                    <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-gem text-indigo-600"></i> 독점적 기술 가치
-                    </h3>
-                    <div class="relative aspect-square mb-6">
-                        <canvas id="radarChart"></canvas>
+    <!-- TOP NAVIGATION & TICKER -->
+    <nav class="glass-header text-white sticky top-0 z-50 px-6 py-4 flex justify-between items-center shadow-lg">
+        <div class="flex items-center gap-4">
+            <span class="bg-blue-600 px-3 py-1 rounded text-xs font-bold uppercase tracking-widest">KOSDAQ 095610</span>
+            <h1 class="text-xl font-extrabold tracking-tight">TES <span class="font-light text-slate-400">Real-time Intelligence</span></h1>
+        </div>
+        <div class="text-right">
+            <div class="text-2xl font-black text-white leading-none">61,300 <span class="text-sm text-red-400">▼ 25.1%</span></div>
+            <div class="text-[10px] text-slate-400 font-bold uppercase">Last Updated: 2026.04.02</div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto mt-8 px-6 space-y-6">
+        
+        <!-- SECTION 1: STRATEGIC INSIGHT (핵심 강조 영역) -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 bg-white border border-blue-100 rounded-2xl p-8 shadow-sm overflow-hidden relative">
+                <div class="absolute top-0 right-0 p-4 opacity-5">
+                    <i class="fa-solid fa-quote-right text-8xl"></i>
+                </div>
+                <h2 class="text-blue-600 font-bold text-sm uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb"></i> Strategic Insight
+                </h2>
+                <p class="text-2xl font-bold leading-snug text-slate-800">
+                    "HBM 후공정주가 고평가될 때, 테스는 <span class="text-blue-600 underline decoration-blue-200 decoration-4 underline-offset-4">진짜 숫자가 찍히는 전공정의 스트라이커</span>로 등극했습니다. 3월 한 달 만에 연 매출 20%를 수주한 모멘텀은 낸드 부활의 신호탄입니다."
+                </p>
+                <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="p-4 bg-slate-50 rounded-xl">
+                        <span class="block text-xs text-slate-400 font-bold mb-1 uppercase">12M Target</span>
+                        <span class="text-xl font-black text-red-500">90,000</span>
                     </div>
                     <div class="p-4 bg-slate-50 rounded-xl">
-                        <div class="flex justify-between items-end mb-2">
-                            <span class="text-sm font-bold text-slate-500">종합 매력도</span>
-                            <span class="text-2xl font-black text-indigo-600">9.5<span class="text-sm text-slate-400 ml-1">/ 10</span></span>
-                        </div>
-                        <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                            <div class="bg-indigo-600 h-full w-[95%]"></div>
-                        </div>
+                        <span class="block text-xs text-slate-400 font-bold mb-1 uppercase">Order Upside</span>
+                        <span class="text-xl font-black text-blue-600">+750억</span>
                     </div>
-                </section>
-
-                <section class="glass-panel p-6 bg-indigo-50/50 border-indigo-100">
-                    <h3 class="text-sm font-bold text-indigo-800 mb-3 uppercase tracking-wider">Strategic Insight</h3>
-                    <p id="expertComment" class="text-slate-700 text-sm leading-relaxed font-medium">
-                        "선단 공정 미세화에 따른 고압 수소 어닐링 수요는 대체 불가능합니다. 특허 소송 리스크가 완화되는 국면에서 압도적인 영업이익률(50% 이상)이 밸류에이션 정당성을 부여합니다."
-                    </p>
-                </section>
+                    <div class="p-4 bg-slate-50 rounded-xl">
+                        <span class="block text-xs text-slate-400 font-bold mb-1 uppercase">Market Pos.</span>
+                        <span class="text-xl font-black text-slate-800 font-bold">TOP PICK</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl">
+                        <span class="block text-xs text-slate-400 font-bold mb-1 uppercase">Risk Level</span>
+                        <span class="text-xl font-black text-orange-500 font-bold">LOW</span>
+                    </div>
+                </div>
             </div>
 
-            <!-- 오른쪽: 실시간 모멘텀 & 가격 전략 -->
-            <div class="lg:col-span-8 space-y-6">
-                
-                <!-- 최신 모멘텀 피드 -->
-                <section class="glass-panel p-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold flex items-center gap-2">
-                            <i class="fa-solid fa-chart-line text-emerald-500"></i> 성장 촉매제 (Catalyst)
-                        </h3>
-                        <span class="text-[10px] font-bold text-slate-400">KEY UPDATES</span>
-                    </div>
-                    <div id="eventFeed" class="space-y-3">
-                        <div class="flex items-center p-4 bg-slate-50 rounded-xl border-l-4 border-indigo-500">
-                            <div class="flex-1">
-                                <h4 class="font-bold text-slate-800 text-sm">2nm 공정 진입에 따른 장비 수요 폭증</h4>
-                                <p class="text-xs text-slate-500">파운드리 선단 공정 필수 채택 비중 확대</p>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-[10px] font-bold text-indigo-600">HOT</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center p-4 bg-slate-50 rounded-xl border-l-4 border-indigo-500">
-                            <div class="flex-1">
-                                <h4 class="font-bold text-slate-800 text-sm">신규 공장 증설 완료 및 가동 시작</h4>
-                                <p class="text-xs text-slate-500">CAPA 기존 대비 2배 확장, 하반기 매출 본격화</p>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-[10px] font-bold text-indigo-600">NEW</span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+            <!-- Quantitative Radar -->
+            <div class="stat-card p-6 flex flex-col items-center justify-center">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Quant Score (8.8/10)</h3>
+                <div class="w-full h-48">
+                    <canvas id="radarChart"></canvas>
+                </div>
+            </div>
+        </section>
 
-                <!-- 가격 전략 카드 -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="glass-panel p-5 text-center">
-                        <div class="text-[10px] font-bold text-slate-400 mb-1 uppercase">Support</div>
-                        <div class="text-xl font-bold text-slate-700">38,500</div>
+        <!-- SECTION 2: INVESTMENT CATALYSTS (투자 핵심 내용) -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Point 1 -->
+            <div class="stat-card p-8 relative overflow-hidden">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-black">01</div>
+                    <h3 class="font-extrabold text-lg">낸드 가동률 정상화</h3>
+                </div>
+                <p class="text-sm text-slate-500 leading-relaxed">
+                    삼성/SK의 낸드 가동률이 80%를 돌파하며 멈췄던 전공정 투자가 재개되었습니다. 테스는 D램보다 낸드 비중이 압도적으로 높아 업황 회복 시 가장 가파른 탄력성을 보입니다.
+                </p>
+                <div class="mt-4 pt-4 border-t border-dashed border-slate-200">
+                    <span class="text-xs font-bold text-blue-600">Growth: +120% YoY Target</span>
+                </div>
+            </div>
+
+            <!-- Point 2 -->
+            <div class="stat-card p-8">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-black">02</div>
+                    <h3 class="font-extrabold text-lg">HBM 하이브리드 본딩</h3>
+                </div>
+                <p class="text-sm text-slate-500 leading-relaxed">
+                    차세대 HBM의 핵심인 하이브리드 본딩 공정에서 테스의 세정/증착 기술 채택 가능성이 가시화되고 있습니다. '범용 장비주'에서 'HBM 수혜주'로의 밸류에이션 재평가가 시작됩니다.
+                </p>
+                <div class="mt-4 pt-4 border-t border-dashed border-slate-200">
+                    <span class="text-xs font-bold text-emerald-600">Status: R&D Final Stage</span>
+                </div>
+            </div>
+
+            <!-- Point 3 -->
+            <div class="stat-card p-8">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-black">03</div>
+                    <h3 class="font-extrabold text-lg">재무적 해자 (Moat)</h3>
+                </div>
+                <p class="text-sm text-slate-500 leading-relaxed">
+                    부채비율 10%대의 무차입 경영에 가까운 재무 건전성을 보유하고 있습니다. 장비 유지보수 매출이 꾸준히 발생하는 선순환 구조로 하방 경직성이 매우 강력합니다.
+                </p>
+                <div class="mt-4 pt-4 border-t border-dashed border-slate-200">
+                    <span class="text-xs font-bold text-slate-800">Debt: 10.4% / ROE: 20%</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: RECENT ORDERS (실시간 수주 현황 - 복구 데이터) -->
+        <section class="bg-white border border-slate-200 rounded-2xl p-8">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h3 class="text-xl font-extrabold flex items-center gap-2">
+                        <i class="fa-solid fa-file-contract text-blue-600"></i> 3월 폭발적 수주 현황 (750억+)
+                    </h3>
+                    <p class="text-sm text-slate-400 mt-1 uppercase tracking-widest font-bold">Recent Contract Win History</p>
+                </div>
+                <div class="hidden md:block">
+                    <span class="order-badge px-3 py-1 rounded-full">실적 퀀텀 점프 가시화</span>
+                </div>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-5 bg-slate-50 rounded-xl border border-slate-100">
+                    <div class="flex items-center gap-6">
+                        <div class="text-center">
+                            <span class="block text-[10px] font-bold text-slate-400 uppercase">Date</span>
+                            <span class="font-black">03.12</span>
+                        </div>
+                        <div class="h-8 w-px bg-slate-200"></div>
+                        <div>
+                            <span class="block text-xs font-bold text-blue-600">SK하이닉스향</span>
+                            <span class="text-lg font-extrabold text-slate-800">485억 원 (전년 매출 14%)</span>
+                        </div>
                     </div>
-                    <div class="glass-panel p-5 text-center border-indigo-500 ring-2 ring-indigo-100 bg-indigo-600 text-white shadow-lg">
-                        <div class="text-[10px] font-bold opacity-70 mb-1 uppercase">Target</div>
-                        <div class="text-2xl font-black italic">65,000</div>
-                    </div>
-                    <div class="glass-panel p-5 text-center">
-                        <div class="text-[10px] font-bold text-rose-400 mb-1 uppercase">Stop Loss</div>
-                        <div class="text-xl font-bold text-rose-500">35,000</div>
+                    <div class="text-right hidden sm:block">
+                        <span class="text-xs text-slate-400 font-medium">PECVD/세정 장비 위주 HBM 투자분</span>
                     </div>
                 </div>
 
-                <!-- 체크리스트 -->
-                <section class="glass-panel p-6">
-                    <h3 class="text-lg font-bold mb-4">투자 핵심 요약</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                        <div class="flex gap-3 items-start p-3 hover:bg-slate-50 rounded-lg transition-colors">
-                            <i class="fa-solid fa-check-double text-indigo-500 mt-1"></i>
-                            <div>
-                                <strong class="block text-slate-800">압도적 수익성</strong>
-                                <span class="text-slate-500 text-xs">영업이익률 50%를 상회하는 독점적 비즈니스 모델</span>
-                            </div>
+                <div class="flex items-center justify-between p-5 bg-slate-50 rounded-xl border border-slate-100">
+                    <div class="flex items-center gap-6">
+                        <div class="text-center">
+                            <span class="block text-[10px] font-bold text-slate-400 uppercase">Date</span>
+                            <span class="font-black">03.17</span>
                         </div>
-                        <div class="flex gap-3 items-start p-3 hover:bg-slate-50 rounded-lg transition-colors">
-                            <i class="fa-solid fa-check-double text-indigo-500 mt-1"></i>
-                            <div>
-                                <strong class="block text-slate-800">특허 분쟁 리스크 해소</strong>
-                                <span class="text-slate-500 text-xs">예지 가처분 기각 등 법적 불확실성 소멸 단계</span>
-                            </div>
+                        <div class="h-8 w-px bg-slate-200"></div>
+                        <div>
+                            <span class="block text-xs font-bold text-blue-600">SK하이닉스향 (추가)</span>
+                            <span class="text-lg font-extrabold text-slate-800">265억 원 (전년 매출 7.5%)</span>
                         </div>
                     </div>
-                </section>
+                    <div class="text-right hidden sm:block">
+                        <span class="text-xs text-slate-400 font-medium">5일 만의 대규모 추가 계약 체결</span>
+                    </div>
+                </div>
             </div>
-        </div>
-        
-        <footer class="text-center text-slate-400 text-[10px] py-8">
-            AI 기반 실시간 데이터 연동 분석 시스템 v3.0 | <span class="font-bold text-slate-500">HPSP EDITION</span>
-        </footer>
-    </div>
+        </section>
+
+        <!-- SECTION 4: PRICE STRATEGY -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="stat-card p-8 bg-slate-900 text-white border-none shadow-xl">
+                <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-bullseye text-blue-400"></i> 가격 및 대응 전략
+                </h3>
+                <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="text-center">
+                        <span class="text-[10px] text-slate-500 uppercase font-bold block mb-1">Entry Range</span>
+                        <span class="font-bold text-lg">5.5만~6만</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-[10px] text-slate-500 uppercase font-bold block mb-1">Target</span>
+                        <span class="font-bold text-lg text-blue-400">90,000</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-[10px] text-slate-500 uppercase font-bold block mb-1">Stop Loss</span>
+                        <span class="font-bold text-lg text-red-400">52,000</span>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed italic">
+                    "최근 고점 대비 -25% 조정을 거치며 밸류에이션 매력이 극대화되었습니다. 60일 이평선 지지를 확인하며 분할 매수할 것을 권고합니다."
+                </p>
+            </div>
+
+            <div class="stat-card p-8">
+                <h3 class="text-lg font-extrabold mb-6">Risk Monitoring</h3>
+                <ul class="space-y-4">
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-circle-check text-emerald-500 mt-1"></i>
+                        <p class="text-sm font-bold">특허 소송 노이즈: <span class="font-medium text-slate-500">1심 승소로 실질 위험 해소 중.</span></p>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-circle-check text-emerald-500 mt-1"></i>
+                        <p class="text-sm font-bold">단일 품목 리스크: <span class="font-medium text-slate-500">GPE 및 High-K 장비로 다변화 성공.</span></p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
 
     <script>
-        // 레이더 차트 (HPSP 데이터 적용)
         const ctx = document.getElementById('radarChart').getContext('2d');
         new Chart(ctx, {
             type: 'radar',
             data: {
-                labels: ['진입장벽', '수익성', '기술력', '성장성', '재무건전'],
+                labels: ['시장매력도', '수익성', '기술력', '성장성', '재무건전'],
                 datasets: [{
-                    data: [10, 10, 9.5, 9.0, 9.8], // HPSP는 수익성과 진입장벽에서 만점
-                    backgroundColor: 'rgba(79, 70, 229, 0.15)',
-                    borderColor: 'rgb(79, 70, 229)',
-                    borderWidth: 3,
-                    pointRadius: 4,
-                    pointBackgroundColor: 'white',
-                    pointBorderWidth: 2
+                    data: [8, 9, 8, 9, 9.5],
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    borderColor: '#3b82f6',
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: '#3b82f6'
                 }]
             },
             options: {
                 scales: {
                     r: {
-                        grid: { color: '#e2e8f0' },
                         angleLines: { color: '#e2e8f0' },
+                        grid: { color: '#e2e8f0' },
                         suggestedMin: 0,
                         suggestedMax: 10,
                         ticks: { display: false },
-                        pointLabels: { font: { size: 12, weight: 'bold' }, color: '#64748b' }
+                        pointLabels: { font: { size: 10, weight: 'bold' }, color: '#64748b' }
                     }
                 },
                 plugins: { legend: { display: false } }
